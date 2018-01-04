@@ -6,7 +6,7 @@ public class Bowling : MonoBehaviour
 {
 	public void Move()
 	{
-		_rigidbody.AddForce(new Vector3(0, 0, 2000f));
+		_rigidbody.AddForce(new Vector3(0, 0, 3000f));
 	}
 
 	[SerializeField]
