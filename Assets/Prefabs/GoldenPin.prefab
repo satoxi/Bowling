@@ -19,7 +19,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 4966900700134932}
-  - component: {fileID: 114873657103192840}
+  - component: {fileID: 114333022798542064}
   m_Layer: 0
   m_Name: GoldenPin
   m_TagString: Untagged
@@ -86,7 +86,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 07fcb254bd5b047658a28f0740fa6e72, type: 2}
+  - {fileID: 2100000, guid: 70c95df4530144d77a35b0b10a8c0799, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -127,7 +127,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &114873657103192840
+--- !u!114 &114333022798542064
 MonoBehaviour:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -135,7 +135,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1691892139738750}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 259052522731241a7abaa9ef637e38ac, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a388d64820634b48b0658b45cfb010a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &136108494414790260
