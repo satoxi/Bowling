@@ -9,6 +9,9 @@ public class GameModel
     public const float RoundDuration = 5f;
     public const int TotalRound = 5;
 
+    public Action OnMatchStart = delegate { };
+    public Action OnMatchEnd = delegate { };
+
     public Action OnRoundEnd = delegate { };
     public Action OnRoundGenerated = delegate { };
     public Action<int> OnRoundScoreChanged = delegate { };
@@ -78,7 +81,10 @@ public class GameModel
         }
 
         OnRoundScoreChanged(RoundResults[CurrentRound].TotalScore);
-        OnRoundPerfect();
+        if (RoundResults[CurrentRound].IsPerfect)
+        {
+            OnRoundPerfect();
+        }
     }
 
     public bool MoveBowling()
@@ -94,12 +100,14 @@ public class GameModel
     public void StartMatch()
     {
         CurrentGameState = GameState.Match;
+        OnMatchStart();
         GenerateNextRound();
     }
 
     public void EndMatch()
     {
         CurrentGameState = GameState.MatchEnd;
+        OnMatchEnd();
         ResetMatch();
     }
 

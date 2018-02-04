@@ -18,14 +18,29 @@ public class Game : MonoBehaviour
 
     private void OnEnable()
     {
+        Model.OnMatchStart += OnMatchStart;
+        Model.OnMatchEnd += OnMatchEnd;
         Model.OnRoundGenerated += OnRoundGenerated;
     }
 
     private void OnDisable()
     {
+        Model.OnMatchStart -= OnMatchStart;
+        Model.OnMatchEnd -= OnMatchEnd;
         Model.OnRoundGenerated -= OnRoundGenerated;
     }
         
+    private void OnMatchStart()
+    {
+        _gameUI.Reset();
+        _gameUI.gameObject.SetActive(true);
+    }
+
+    private void OnMatchEnd()
+    {
+        _gameUI.gameObject.SetActive(false);
+    }
+
 	private void Update()
 	{
         switch (Model.CurrentGameState)

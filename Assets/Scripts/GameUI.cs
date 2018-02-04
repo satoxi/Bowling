@@ -7,14 +7,41 @@ public class GameUI : MonoBehaviour
 {
     public void Init(GameModel model)
     {
-        model.OnRoundScoreChanged += OnRoundScoreChanged;
+        _model = model;
+    }
+
+    public void Reset()
+    {
+        for (int i = 0; i < _scoreHuds.Count; i++)
+        {
+            _scoreHuds[i].Reset();
+        }
+    }
+
+    private void OnEnable()
+    {
+        _model.OnRoundScoreChanged += OnRoundScoreChanged;
+        _model.OnRoundPerfect += OnRoundPerfect;
+    }
+
+    private void OnDisable()
+    {
+        _model.OnRoundScoreChanged -= OnRoundScoreChanged;
+        _model.OnRoundPerfect -= OnRoundPerfect;
     }
 
     private void OnRoundScoreChanged(int score)
     {
-        _score.text = score.ToString();
+        _scoreHuds[_model.CurrentRound].RefreshScore(score);
+    }
+
+    private void OnRoundPerfect()
+    {
+        _scoreHuds[_model.CurrentRound].SetPerfect();    
     }
 
     [SerializeField]
-    private Text _score;
+    private List<ScoreHud> _scoreHuds;
+
+    private GameModel _model;
 }
