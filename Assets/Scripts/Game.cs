@@ -95,7 +95,7 @@ public class Game : MonoBehaviour
 
     private void OnRoundGenerated()
     {
-        _platform.Reset();
+        _platform.Reset(Model.CurrentRoundData);
         for (int i = 0; i < _bowlings.Count; i++)
         {
             _bowlings[i].Reset();

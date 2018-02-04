@@ -31,6 +31,32 @@ public class GameModel
     public GameModel()
     {
         CurrentGameState = GameState.Null;
+        _roundData = new List<int[,]>();
+        _roundData.Add(new int[,]{
+            {-1, -1, 0, -1, -1},
+            {-1, -1, -1, -1, 0}, 
+            {0, -1, -1, -1, -1}
+        });
+        _roundData.Add(new int[,]{
+            {-1, -1, 0, -1, -1},
+            {-1, -1, -1, -1, 0}, 
+            {-1, 1, 0, 1, -1}
+        });
+        _roundData.Add(new int[,]{
+            {-1, 1, 1, -1, -1},
+            {1, 1, 0, 0, 0}, 
+            {-1, 1, 1, 0, -1}
+        });
+        _roundData.Add(new int[,]{
+            {-1, 1, 1, 1, -1},
+            {1, 1, 1, 1, 1}, 
+            {-1, 1, 1, 1, -1}
+        });
+        _roundData.Add(new int[,]{
+            {-1, 1, 1, 2, -1},
+            {2, 1, 1, 1, 1}, 
+            {-1, 2, 1, 1, -1}
+        });
         ResetRound();
     }
 
@@ -58,7 +84,7 @@ public class GameModel
     private void GenerateNextRound()
     {
         CurrentRound++;
-        if (CurrentRound > TotalRound)
+        if (CurrentRound >= TotalRound)
         {
             EndMatch();
             OnRoundEnd();
@@ -67,6 +93,7 @@ public class GameModel
         {
             CurrentRoundElapsedTime = 0;
             CurrentMatchState = MatchState.Standby;
+            CurrentRoundData = _roundData[CurrentRound];
             OnRoundGenerated();
         }
     }

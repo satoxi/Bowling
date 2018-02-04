@@ -8,7 +8,7 @@ public class Platform : MonoBehaviour
         _transform.position += new Vector3(_velocity, 0, 0) * Time.deltaTime;
     }
 
-    public void Reset()
+    public void Reset(int[,] roundData)
     {
         if (_pins == null)
         {
@@ -20,15 +20,10 @@ public class Platform : MonoBehaviour
             Destroy(_pins[i].gameObject);
         }
         _pins.Clear();
-            
-        int[,] roundData = new int[3, 5]
-            {{-1, -1, -1, 0, -1}, 
-            {-1, 0, -1, -1, -1}, 
-            {-1, -1, 1, -1, -1}};
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < roundData.GetLength(0); i++)
         {
-            for (int k = 0; k < 5; k++)
+            for (int k = 0; k < roundData.GetLength(1); k++)
             {
                 if (roundData[i,k] != -1)
                 {
@@ -43,7 +38,7 @@ public class Platform : MonoBehaviour
     private void CreatePin(int row, int column, int type)
     {
         PinData data = GetPinData(type);
-        Vector3 position = _originPoint.position + new Vector3(column * 5, 0, row * 5);
+        Vector3 position = _originPoint.position + new Vector3(column * 5, 0, row * 3);
         GameObject pinObject = GameObject.Instantiate(data.Prefab);
         pinObject.transform.SetParent(_originPoint.parent);
         pinObject.transform.position = position;
