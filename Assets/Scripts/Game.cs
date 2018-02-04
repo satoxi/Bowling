@@ -8,7 +8,11 @@ public class Game : MonoBehaviour
 
     private void Awake()
     {
+        _platform.HandlePinDown += HandlePinDown;
+
         Model = new GameModel();
+        _gameUI.Init(Model);
+
         Model.CurrentGameState = GameState.Home;
     }
 
@@ -32,6 +36,10 @@ public class Game : MonoBehaviour
             case GameState.Match:
                 HandleMatchUpdate(Time.deltaTime);
                 HandleMatchInput();
+                if (Model.CurrentMatchState == MatchState.Round)
+                {
+                    _platform.CheckPins();
+                }
                 break;
             case GameState.MatchEnd:
                 HandleMatchEndInput();
@@ -80,6 +88,11 @@ public class Game : MonoBehaviour
         }
     }
 
+    private void HandlePinDown(PinData data)
+    {
+        Model.HandlePinDown(data);
+    }
+
     private void OnRoundGenerated()
     {
         _platform.Reset(Model.CurrentRoundData);
@@ -91,6 +104,8 @@ public class Game : MonoBehaviour
         Model.CurrentMatchState = MatchState.Round;
     }
 
+    [SerializeField]
+    private GameUI _gameUI;
     [SerializeField]
     private Platform _platform;
 	[SerializeField]
@@ -110,4 +125,11 @@ public enum MatchState
     Null,
     Standby,
     Round,
+}
+
+public enum CustomTags
+{
+    Pin = 0,
+    Bowling = 1,
+    Platform = 2,
 }

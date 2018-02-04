@@ -1,8 +1,19 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 public class Platform : MonoBehaviour
 {
+    public Action<PinData> HandlePinDown = delegate { };
+
+    public void CheckPins()
+    {
+        for (int i = 0; i < _pins.Count; i++)
+        {
+            _pins[i].CheckIsDown(_transform.up);
+        }    
+    }
+
     public void Move()
     {
         _transform.position += new Vector3(_velocity, 0, 0) * Time.deltaTime;
@@ -45,6 +56,7 @@ public class Platform : MonoBehaviour
 
         Pin pin = pinObject.GetComponent<Pin>();
         pin.Init(data);
+        pin.OnDown += OnPinDown;
         _pins.Add(pin);
     }
 
@@ -58,6 +70,11 @@ public class Platform : MonoBehaviour
             }
         }
         return null;
+    }
+
+    private void OnPinDown(PinData data)
+    {
+        HandlePinDown(data);
     }
 
     [SerializeField]

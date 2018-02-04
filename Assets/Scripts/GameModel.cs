@@ -11,11 +11,14 @@ public class GameModel
 
     public Action OnRoundEnd = delegate { };
     public Action OnRoundGenerated = delegate { };
+    public Action<int> OnRoundScoreChanged = delegate { };
+    public Action OnRoundPerfect = delegate { };
 
     public int CurrentBowlingIndex { get; private set; }
 
     public int CurrentRound { get; private set; }
     public float CurrentRoundElapsedTime { get; private set; }
+    public List<RoundResultData> RoundResults { get; private set; }
 
     public GameState CurrentGameState;
     public MatchState CurrentMatchState
@@ -60,7 +63,22 @@ public class GameModel
             {2, 1, 1, 1, 1}, 
             {-1, 2, 1, 1, -1}
         });
+        RoundResults = new List<RoundResultData>();
         ResetMatch();
+    }
+
+    public void HandlePinDown(PinData data)
+    {
+        RoundResults[CurrentRound].TotalScore += data.Score;
+        RoundResults[CurrentRound].DownPinCount++;
+        if (RoundResults[CurrentRound].DownPinCount == _currentRoundPinCount)
+        {
+            RoundResults[CurrentRound].IsPerfect = true;
+            RoundResults[CurrentRound].TotalScore += 20;
+        }
+
+        OnRoundScoreChanged(RoundResults[CurrentRound].TotalScore);
+        OnRoundPerfect();
     }
 
     public bool MoveBowling()
@@ -108,6 +126,17 @@ public class GameModel
             CurrentBowlingIndex = -1;
             CurrentMatchState = MatchState.Standby;
             CurrentRoundData = _roundData[CurrentRound];
+            _currentRoundPinCount = 0;
+            for (int i = 0; i < CurrentRoundData.GetLength(0); i++)
+            {
+                for (int k = 0; k < CurrentRoundData.GetLength(1); k++)
+                {
+                    if (CurrentRoundData[i,k] != -1)
+                    {
+                        _currentRoundPinCount++;
+                    }
+                }
+            }
             OnRoundGenerated();
         }
     }
@@ -115,9 +144,25 @@ public class GameModel
     private void ResetMatch()
     {
         CurrentRound = -1;
+
+        RoundResults.Clear();
+        for (int i = 0; i < TotalRound; i++)
+        {
+            RoundResults.Add(new RoundResultData());
+        }
+
         CurrentMatchState = MatchState.Null;
     }
 
     private MatchState _currentMatchState;
     private List<int[,]> _roundData;
+    private List<RoundResultData> _roundResultList;
+    private int _currentRoundPinCount;
+}
+
+public class RoundResultData
+{
+    public int TotalScore;
+    public int DownPinCount;
+    public bool IsPerfect;
 }
