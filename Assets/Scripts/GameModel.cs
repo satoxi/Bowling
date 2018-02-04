@@ -22,6 +22,8 @@ public class GameModel
     public int CurrentRound { get; private set; }
     public float CurrentRoundElapsedTime { get; private set; }
     public List<RoundResultData> RoundResults { get; private set; }
+    public int TotalScore { get; private set; }
+    public int PerfectCount { get; private set; }
 
     public GameState CurrentGameState;
     public MatchState CurrentMatchState
@@ -78,6 +80,11 @@ public class GameModel
         {
             RoundResults[CurrentRound].IsPerfect = true;
             RoundResults[CurrentRound].TotalScore += 20;
+            if (CurrentRoundElapsedTime < RoundDuration)
+            {
+                RoundResults[CurrentRound].TotalScore += 
+                    Mathf.FloorToInt(RoundDuration - CurrentRoundElapsedTime) * 5;
+            }
         }
 
         OnRoundScoreChanged(RoundResults[CurrentRound].TotalScore);
@@ -120,11 +127,26 @@ public class GameModel
         }
     }
 
+    private void ComputeTotalResult()
+    {
+        TotalScore = 0;
+        PerfectCount = 0;
+        for (int i = 0; i < RoundResults.Count; i++)
+        {
+            TotalScore += RoundResults[i].TotalScore;
+            if (RoundResults[i].IsPerfect)
+            {
+                PerfectCount++;
+            }
+        }
+    }
+
     private void GenerateNextRound()
     {
         CurrentRound++;
         if (CurrentRound >= TotalRound)
         {
+            ComputeTotalResult();
             EndMatch();
             OnRoundEnd();
         }

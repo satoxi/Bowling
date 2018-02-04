@@ -43,7 +43,7 @@ public class Platform : MonoBehaviour
             }
         }
 
-        _transform.position = new Vector3(-25, 0, _transform.position.z);
+        _transform.position = new Vector3(-30, 0, _transform.position.z);
     }
 
     private void CreatePin(int row, int column, int type)

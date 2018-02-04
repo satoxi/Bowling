@@ -32,13 +32,18 @@ public class Game : MonoBehaviour
         
     private void OnMatchStart()
     {
+        _bowlingGroup.SetActive(true);
+
         _gameUI.Reset();
         _gameUI.gameObject.SetActive(true);
     }
 
     private void OnMatchEnd()
     {
+        _bowlingGroup.SetActive(false);
+
         _gameUI.gameObject.SetActive(false);
+        _gameEndUI.Refresh(Model);
     }
 
 	private void Update()
@@ -90,6 +95,7 @@ public class Game : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.R))
         {
+            _gameEndUI.gameObject.SetActive(false);
             Model.StartMatch();
         }
     }
@@ -115,14 +121,17 @@ public class Game : MonoBehaviour
         {
             _bowlings[i].Reset();
         }
-
         Model.CurrentMatchState = MatchState.Round;
     }
 
     [SerializeField]
     private GameUI _gameUI;
     [SerializeField]
+    private GameEndUI _gameEndUI;
+    [SerializeField]
     private Platform _platform;
+    [SerializeField]
+    private GameObject _bowlingGroup;
 	[SerializeField]
 	private List<Bowling> _bowlings;
 }
