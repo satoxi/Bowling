@@ -41,7 +41,7 @@ public class Game : MonoBehaviour
 
     private void HandleHomeInput()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.R))
         {
             Model.StartMatch();
         }
@@ -54,17 +54,12 @@ public class Game : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-		{
-			MoveBowling(0);
-		}
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            MoveBowling(1);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            MoveBowling(2);
+            if (Model.MoveBowling())
+            {
+                _bowlings[Model.CurrentBowlingIndex].Move();
+            }
         }
 	}
 
@@ -84,14 +79,6 @@ public class Game : MonoBehaviour
             _platform.Move();
         }
     }
-
-    private void MoveBowling(int index)
-	{
-        if (_bowlings[index].CanMove())
-        {
-            _bowlings[index].Move();
-        }
-	}
 
     private void OnRoundGenerated()
     {

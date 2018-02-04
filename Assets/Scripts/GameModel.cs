@@ -5,11 +5,14 @@ using System.Collections.Generic;
 
 public class GameModel
 {
+    public const int BowlingCount = 5;
     public const float RoundDuration = 5f;
     public const int TotalRound = 5;
 
     public Action OnRoundEnd = delegate { };
     public Action OnRoundGenerated = delegate { };
+
+    public int CurrentBowlingIndex { get; private set; }
 
     public int CurrentRound { get; private set; }
     public float CurrentRoundElapsedTime { get; private set; }
@@ -57,7 +60,17 @@ public class GameModel
             {2, 1, 1, 1, 1}, 
             {-1, 2, 1, 1, -1}
         });
-        ResetRound();
+        ResetMatch();
+    }
+
+    public bool MoveBowling()
+    {
+        if (CurrentBowlingIndex < BowlingCount - 1)
+        {
+            CurrentBowlingIndex++;
+            return true;
+        }
+        return false;
     }
 
     public void StartMatch()
@@ -69,7 +82,7 @@ public class GameModel
     public void EndMatch()
     {
         CurrentGameState = GameState.MatchEnd;
-        ResetRound();
+        ResetMatch();
     }
 
     public void UpdateRoundTime(float deltaTime)
@@ -92,17 +105,16 @@ public class GameModel
         else
         {
             CurrentRoundElapsedTime = 0;
+            CurrentBowlingIndex = -1;
             CurrentMatchState = MatchState.Standby;
             CurrentRoundData = _roundData[CurrentRound];
             OnRoundGenerated();
         }
     }
 
-    private void ResetRound()
+    private void ResetMatch()
     {
         CurrentRound = -1;
-        CurrentRoundElapsedTime = 0;
-
         CurrentMatchState = MatchState.Null;
     }
 
