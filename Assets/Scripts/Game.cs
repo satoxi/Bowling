@@ -36,6 +36,8 @@ public class Game : MonoBehaviour
 
         _gameUI.Reset();
         _gameUI.gameObject.SetActive(true);
+
+        AudioManager.Instance.PlayBGM();
     }
 
     private void OnMatchEnd()
@@ -44,6 +46,8 @@ public class Game : MonoBehaviour
 
         _gameUI.gameObject.SetActive(false);
         _gameEndUI.Refresh(Model);
+
+        AudioManager.Instance.StopBGM();
     }
 
 	private void Update()
