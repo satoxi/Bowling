@@ -15,7 +15,7 @@ public class Bowling : MonoBehaviour
         _rigidbody.angularVelocity = Vector3.zero;
         _rigidbody.transform.localRotation = Quaternion.Euler(Vector3.zero);
         _rigidbody.transform.localPosition = Vector3.zero;
-        transform.position = _position;  
+        transform.localPosition = _position;
     }
 
 	[SerializeField]

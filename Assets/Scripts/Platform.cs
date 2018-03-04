@@ -43,13 +43,13 @@ public class Platform : MonoBehaviour
             }
         }
 
-        _transform.position = new Vector3(-30, 0, _transform.position.z);
+        _transform.position = new Vector3(-40, 0, _transform.position.z);
     }
 
     private void CreatePin(int row, int column, int type)
     {
         PinData data = GetPinData(type);
-        Vector3 position = _originPoint.position + new Vector3(column * 5, 0, row * 3);
+        Vector3 position = _originPoint.position + new Vector3(column * 7, 0, row * 6);
         GameObject pinObject = GameObject.Instantiate(data.Prefab);
         pinObject.transform.SetParent(_originPoint.parent);
         pinObject.transform.position = position;

@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class GameModel
 {
     public const int BowlingCount = 5;
-    public const float RoundDuration = 5f;
+    public const float RoundDuration = 5.5f;
     public const int TotalRound = 5;
 
     public Action OnMatchStart = delegate { };
