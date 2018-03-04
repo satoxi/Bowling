@@ -18,6 +18,7 @@ public class Game : MonoBehaviour
         Model = new GameModel();
         _gameUI.Init(this);
         _gameStartUI.Init(this);
+        _gameEndUI.Init(this);
 
         Model.CurrentGameState = GameState.Home;
         _gameStartUI.gameObject.SetActive(true);
@@ -40,6 +41,7 @@ public class Game : MonoBehaviour
     private void OnMatchStart()
     {
         _gameStartUI.gameObject.SetActive(false);
+        _gameEndUI.gameObject.SetActive(false);
 
         _bowlingGroup.SetActive(true);
 
@@ -54,7 +56,7 @@ public class Game : MonoBehaviour
         _bowlingGroup.SetActive(false);
 
         _gameUI.gameObject.SetActive(false);
-        _gameEndUI.Refresh(Model);
+        _gameEndUI.Show();
 
         AudioManager.Instance.StopBGM();
     }
@@ -63,6 +65,9 @@ public class Game : MonoBehaviour
 	{
         switch (Model.CurrentGameState)
         {
+            case GameState.Home:
+                _gameEndUI.gameObject.SetActive(false);
+                break;
             case GameState.Match:
                 HandleMatchUpdate(Time.deltaTime);
                 HandleMatchInput();
@@ -70,9 +75,6 @@ public class Game : MonoBehaviour
                 {
                     _platform.CheckPins();
                 }
-                break;
-            case GameState.MatchEnd:
-                HandleMatchEndInput();
                 break;
         }
 	}
@@ -92,15 +94,6 @@ public class Game : MonoBehaviour
             }
         }
 	}
-
-    private void HandleMatchEndInput()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            _gameEndUI.gameObject.SetActive(false);
-            Model.StartMatch();
-        }
-    }
 
     private void HandleMatchUpdate(float deltaTime)
     {
