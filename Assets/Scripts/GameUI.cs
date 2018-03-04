@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class GameUI : MonoBehaviour
 {
-    public void Init(GameModel model)
+    public void Init(Game game)
     {
-        _model = model;
+        _model = game.Model;
     }
 
     public void Reset()

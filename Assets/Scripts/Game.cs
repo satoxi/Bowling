@@ -6,14 +6,21 @@ public class Game : MonoBehaviour
 {
     public GameModel Model { get; private set; }
 
+    public void StartMatch()
+    {
+        Model.StartMatch();
+    }
+
     private void Awake()
     {
         _platform.HandlePinDown += HandlePinDown;
 
         Model = new GameModel();
-        _gameUI.Init(Model);
+        _gameUI.Init(this);
+        _gameStartUI.Init(this);
 
         Model.CurrentGameState = GameState.Home;
+        _gameStartUI.gameObject.SetActive(true);
     }
 
     private void OnEnable()
@@ -32,6 +39,8 @@ public class Game : MonoBehaviour
         
     private void OnMatchStart()
     {
+        _gameStartUI.gameObject.SetActive(false);
+
         _bowlingGroup.SetActive(true);
 
         _gameUI.Reset();
@@ -54,9 +63,6 @@ public class Game : MonoBehaviour
 	{
         switch (Model.CurrentGameState)
         {
-            case GameState.Home:
-                HandleHomeInput();
-                break;
             case GameState.Match:
                 HandleMatchUpdate(Time.deltaTime);
                 HandleMatchInput();
@@ -70,14 +76,6 @@ public class Game : MonoBehaviour
                 break;
         }
 	}
-
-    private void HandleHomeInput()
-    {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Model.StartMatch();
-        }
-    }
 
 	private void HandleMatchInput()
 	{
@@ -128,6 +126,8 @@ public class Game : MonoBehaviour
         Model.CurrentMatchState = MatchState.Round;
     }
 
+    [SerializeField]
+    private GameStartUI _gameStartUI;
     [SerializeField]
     private GameUI _gameUI;
     [SerializeField]
