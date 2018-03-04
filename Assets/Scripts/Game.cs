@@ -22,6 +22,8 @@ public class Game : MonoBehaviour
 
         Model.CurrentGameState = GameState.Home;
         _gameStartUI.gameObject.SetActive(true);
+
+        _inputHandler = new InputHandler();
     }
 
     private void OnEnable()
@@ -29,6 +31,8 @@ public class Game : MonoBehaviour
         Model.OnMatchStart += OnMatchStart;
         Model.OnMatchEnd += OnMatchEnd;
         Model.OnRoundGenerated += OnRoundGenerated;
+
+        _inputHandler.OnSlideUp += OnSlideUp;
     }
 
     private void OnDisable()
@@ -36,6 +40,8 @@ public class Game : MonoBehaviour
         Model.OnMatchStart -= OnMatchStart;
         Model.OnMatchEnd -= OnMatchEnd;
         Model.OnRoundGenerated -= OnRoundGenerated;
+
+        _inputHandler.OnSlideUp -= OnSlideUp;
     }
         
     private void OnMatchStart()
@@ -59,6 +65,14 @@ public class Game : MonoBehaviour
         _gameEndUI.Show();
 
         AudioManager.Instance.StopBGM();
+    }
+
+    private void OnSlideUp()
+    {
+        if (Model.MoveBowling())
+        {
+            _bowlings[Model.CurrentBowlingIndex].Move();
+        }
     }
 
 	private void Update()
@@ -86,13 +100,7 @@ public class Game : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (Model.MoveBowling())
-            {
-                _bowlings[Model.CurrentBowlingIndex].Move();
-            }
-        }
+        _inputHandler.Update();
 	}
 
     private void HandleMatchUpdate(float deltaTime)
@@ -118,7 +126,7 @@ public class Game : MonoBehaviour
         }
         Model.CurrentMatchState = MatchState.Round;
     }
-
+        
     [SerializeField]
     private GameStartUI _gameStartUI;
     [SerializeField]
@@ -131,6 +139,8 @@ public class Game : MonoBehaviour
     private GameObject _bowlingGroup;
 	[SerializeField]
 	private List<Bowling> _bowlings;
+
+    private InputHandler _inputHandler;
 }
 
 public enum GameState
